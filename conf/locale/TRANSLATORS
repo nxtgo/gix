@@ -1,6 +1,11 @@
 # This file lists all PUBLIC individuals having contributed content to the translation.
 # Entries are in alphabetical order.
 
+# gix translators
+elisiei yehorov (es-ES, ru-RU) <yehorovye AT disroot DOT org>
+esteban gonzalez (es-ES) <esteban AT estebandev DOT xyz>
+
+# gogs translators
 Adam Strzelecki <ono AT java DOT pl>
 Adrian Verde <me AT adrianverde DOT com>
 Akihiro YAGASAKI <yaggytter AT momiage DOT com>
