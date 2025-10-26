@@ -10,7 +10,7 @@ package main
 import (
 	"os"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	log "unknwon.dev/clog/v2"
 
 	"gogs.io/gogs/internal/cmd"
@@ -26,15 +26,15 @@ func main() {
 	app.Name = "Gogs"
 	app.Usage = "A painless self-hosted Git service"
 	app.Version = conf.App.Version
-	app.Commands = []cli.Command{
-		cmd.Web,
-		cmd.Serv,
-		cmd.Hook,
-		cmd.Cert,
-		cmd.Admin,
-		cmd.Import,
-		cmd.Backup,
-		cmd.Restore,
+	app.Commands = cli.Commands{
+		&cmd.Web,
+		&cmd.Serv,
+		&cmd.Hook,
+		&cmd.Cert,
+		&cmd.Admin,
+		&cmd.Import,
+		&cmd.Backup,
+		&cmd.Restore,
 	}
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal("Failed to start application: %v", err)

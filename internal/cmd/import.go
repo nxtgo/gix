@@ -14,7 +14,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/unknwon/com"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 
 	"gogs.io/gogs/internal/conf"
 )
@@ -25,8 +25,8 @@ var (
 		Usage: "Import portable data as local Gogs data",
 		Description: `Allow user import data from other Gogs installations to local instance
 without manually hacking the data files`,
-		Subcommands: []cli.Command{
-			subcmdImportLocale,
+		Subcommands: []*cli.Command{
+			&subcmdImportLocale,
 		},
 	}
 

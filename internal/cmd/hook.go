@@ -16,7 +16,7 @@ import (
 	"strings"
 
 	"github.com/unknwon/com"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	log "unknwon.dev/clog/v2"
 
 	"github.com/gogs/git-module"
@@ -25,6 +25,7 @@ import (
 	"gogs.io/gogs/internal/database"
 	"gogs.io/gogs/internal/email"
 	"gogs.io/gogs/internal/httplib"
+	"gogs.io/gogs/internal/repoutil"
 )
 
 var (
@@ -35,10 +36,10 @@ var (
 		Flags: []cli.Flag{
 			stringFlag("config, c", "", "Custom configuration file path"),
 		},
-		Subcommands: []cli.Command{
-			subcmdHookPreReceive,
-			subcmdHookUpadte,
-			subcmdHookPostReceive,
+		Subcommands: []*cli.Command{
+			&subcmdHookPreReceive,
+			&subcmdHookUpadte,
+			&subcmdHookPostReceive,
 		},
 	}
 
@@ -126,7 +127,7 @@ func runHookPreReceive(c *cli.Context) error {
 
 		// Check force push
 		output, err := git.NewCommand("rev-list", "--max-count=1", oldCommitID, "^"+newCommitID).
-			RunInDir(database.RepoPath(os.Getenv(database.EnvRepoOwnerName), os.Getenv(database.EnvRepoName)))
+			RunInDir(repoutil.RepositoryPath(os.Getenv(database.EnvRepoOwnerName), os.Getenv(database.EnvRepoName)))
 		if err != nil {
 			fail("Internal error", "Failed to detect force push: %v", err)
 		} else if len(output) > 0 {
@@ -145,7 +146,7 @@ func runHookPreReceive(c *cli.Context) error {
 	} else {
 		hookCmd = exec.Command(customHooksPath)
 	}
-	hookCmd.Dir = database.RepoPath(os.Getenv(database.EnvRepoOwnerName), os.Getenv(database.EnvRepoName))
+	hookCmd.Dir = repoutil.RepositoryPath(os.Getenv(database.EnvRepoOwnerName), os.Getenv(database.EnvRepoName))
 	hookCmd.Stdout = os.Stdout
 	hookCmd.Stdin = buf
 	hookCmd.Stderr = os.Stderr
@@ -162,9 +163,9 @@ func runHookUpdate(c *cli.Context) error {
 	setup(c, "update.log", false)
 
 	args := c.Args()
-	if len(args) != 3 {
+	if args.Len() != 3 {
 		fail("Arguments received are not equal to three", "Arguments received are not equal to three")
-	} else if args[0] == "" {
+	} else if args.First() == "" {
 		fail("First argument 'refName' is empty", "First argument 'refName' is empty")
 	}
 
@@ -175,11 +176,11 @@ func runHookUpdate(c *cli.Context) error {
 
 	var hookCmd *exec.Cmd
 	if conf.IsWindowsRuntime() {
-		hookCmd = exec.Command("bash.exe", append([]string{"custom_hooks/update"}, args...)...)
+		hookCmd = exec.Command("bash.exe", append([]string{"custom_hooks/update"}, args.Slice()...)...)
 	} else {
-		hookCmd = exec.Command(customHooksPath, args...)
+		hookCmd = exec.Command(customHooksPath, args.Slice()...)
 	}
-	hookCmd.Dir = database.RepoPath(os.Getenv(database.EnvRepoOwnerName), os.Getenv(database.EnvRepoName))
+	hookCmd.Dir = repoutil.RepositoryPath(os.Getenv(database.EnvRepoOwnerName), os.Getenv(database.EnvRepoName))
 	hookCmd.Stdout = os.Stdout
 	hookCmd.Stdin = os.Stdin
 	hookCmd.Stderr = os.Stderr
@@ -263,7 +264,7 @@ func runHookPostReceive(c *cli.Context) error {
 	} else {
 		hookCmd = exec.Command(customHooksPath)
 	}
-	hookCmd.Dir = database.RepoPath(os.Getenv(database.EnvRepoOwnerName), os.Getenv(database.EnvRepoName))
+	hookCmd.Dir = repoutil.RepositoryPath(os.Getenv(database.EnvRepoOwnerName), os.Getenv(database.EnvRepoName))
 	hookCmd.Stdout = os.Stdout
 	hookCmd.Stdin = buf
 	hookCmd.Stderr = os.Stderr

@@ -25,7 +25,7 @@ import (
 	"github.com/go-macaron/toolbox"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/unknwon/com"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"gopkg.in/macaron.v1"
 	log "unknwon.dev/clog/v2"
 

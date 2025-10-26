@@ -11,7 +11,7 @@ import (
 	"runtime"
 
 	"github.com/pkg/errors"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 
 	"gogs.io/gogs/internal/conf"
 	"gogs.io/gogs/internal/database"
@@ -23,15 +23,15 @@ var (
 		Usage: "Perform admin operations on command line",
 		Description: `Allow using internal logic of Gogs without hacking into the source code
 to make automatic initialization process more smoothly`,
-		Subcommands: []cli.Command{
-			subcmdCreateUser,
-			subcmdDeleteInactivateUsers,
-			subcmdDeleteRepositoryArchives,
-			subcmdDeleteMissingRepositories,
-			subcmdGitGcRepos,
-			subcmdRewriteAuthorizedKeys,
-			subcmdSyncRepositoryHooks,
-			subcmdReinitMissingRepositories,
+		Subcommands: []*cli.Command{
+			&subcmdCreateUser,
+			&subcmdDeleteInactivateUsers,
+			&subcmdDeleteRepositoryArchives,
+			&subcmdDeleteMissingRepositories,
+			&subcmdGitGcRepos,
+			&subcmdRewriteAuthorizedKeys,
+			&subcmdSyncRepositoryHooks,
+			&subcmdReinitMissingRepositories,
 		},
 	}
 
@@ -100,7 +100,7 @@ to make automatic initialization process more smoothly`,
 		Name:  "rewrite-authorized-keys",
 		Usage: "Rewrite '.ssh/authorized_keys' file (caution: non-Gogs keys will be lost)",
 		Action: adminDashboardOperation(
-			database.RewriteAuthorizedKeys,
+			database.Handle.PublicKey().RewriteAuthorizedKeys,
 			"All public keys have been rewritten successfully",
 		),
 		Flags: []cli.Flag{

@@ -15,7 +15,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/unknwon/cae/zip"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"gopkg.in/ini.v1"
 	log "unknwon.dev/clog/v2"
 

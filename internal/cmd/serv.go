@@ -14,11 +14,12 @@ import (
 	"time"
 
 	"github.com/unknwon/com"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	log "unknwon.dev/clog/v2"
 
 	"gogs.io/gogs/internal/conf"
 	"gogs.io/gogs/internal/database"
+	"gogs.io/gogs/internal/repoutil"
 )
 
 const (
@@ -58,8 +59,6 @@ func setup(c *cli.Context, logFile string, connectDB bool) {
 	var customConf string
 	if c.IsSet("config") {
 		customConf = c.String("config")
-	} else if c.GlobalIsSet("config") {
-		customConf = c.GlobalString("config")
 	}
 
 	err := conf.Init(customConf)
@@ -137,12 +136,12 @@ func runServ(c *cli.Context) error {
 	setup(c, "serv.log", true)
 
 	if conf.SSH.Disabled {
-		println("Gogs: SSH has been disabled")
+		println("gogs: ssh has been disabled")
 		return nil
 	}
 
-	if len(c.Args()) < 1 {
-		fail("Not enough arguments", "Not enough arguments")
+	if c.Args().Len() < 1 {
+		fail("not enough arguments", "not enough arguments")
 	}
 
 	sshCmd := os.Getenv("SSH_ORIGINAL_COMMAND")
@@ -192,9 +191,9 @@ func runServ(c *cli.Context) error {
 	// Allow anonymous (user is nil) clone for public repositories.
 	var user *database.User
 
-	key, err := database.GetPublicKeyByID(com.StrTo(strings.TrimPrefix(c.Args()[0], "key-")).MustInt64())
+	key, err := database.GetPublicKeyByID(com.StrTo(strings.TrimPrefix(c.Args().First(), "key-")).MustInt64())
 	if err != nil {
-		fail("Invalid key ID", "Invalid key ID '%s': %v", c.Args()[0], err)
+		fail("Invalid key ID", "Invalid key ID '%s': %v", c.Args().First(), err)
 	}
 
 	if requestMode == database.AccessModeWrite || repo.IsPrivate {
@@ -268,7 +267,7 @@ func runServ(c *cli.Context) error {
 			OwnerSalt: owner.Salt,
 			RepoID:    repo.ID,
 			RepoName:  repo.Name,
-			RepoPath:  repo.RepoPath(),
+			RepoPath:  repoutil.RepositoryPath(ownerName, repoName),
 		})...)
 	}
 	gitCmd.Dir = conf.Repository.Root

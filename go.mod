@@ -43,6 +43,7 @@ require (
 	github.com/unknwon/i18n v0.0.0-20190805065654-5c6446a380b6
 	github.com/unknwon/paginater v0.0.0-20170405233947-45e5d631308e
 	github.com/urfave/cli v1.22.17
+	github.com/urfave/cli/v2 v2.27.7
 	golang.org/x/crypto v0.41.0
 	golang.org/x/net v0.43.0
 	golang.org/x/text v0.28.0
@@ -118,6 +119,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
+	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	go.bobheadxi.dev/streamline v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.11.0 // indirect
 	go.opentelemetry.io/otel/trace v1.11.0 // indirect
@@ -134,6 +136,3 @@ require (
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.11.0 // indirect
 )
-
-// +heroku goVersion go1.24
-// +heroku install ./
