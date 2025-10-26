@@ -144,7 +144,7 @@ func NewRepoContext() {
 	// Set git some configurations.
 	if _, stderr, err := process.Exec("NewRepoContext(git config --global core.quotepath false)",
 		"git", "config", "--global", "core.quotepath", "false"); err != nil {
-		log.Fatal("Failed to execute 'git config --global core.quotepath false': %v - %s", err, stderr)
+		log.Warn("Failed to execute 'git config --global core.quotepath false': %v - %s", err, stderr)
 	}
 
 	RemoveAllWithNotice("Clean up repository temporary data", filepath.Join(conf.Server.AppDataPath, "tmp"))

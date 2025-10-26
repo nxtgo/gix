@@ -18,13 +18,17 @@ import (
 )
 
 func init() {
-	conf.App.Version = "0.14.0+dev"
+	conf.App.Version = "0.1.0+dev"
 }
 
 func main() {
+	if conf.IsWindowsRuntime() {
+		panic("gtfo lol")
+	}
+
 	app := cli.NewApp()
-	app.Name = "Gogs"
-	app.Usage = "A painless self-hosted Git service"
+	app.Name = "gix"
+	app.Usage = "the git service"
 	app.Version = conf.App.Version
 	app.Commands = cli.Commands{
 		&cmd.Web,

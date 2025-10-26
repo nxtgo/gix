@@ -52,6 +52,9 @@ func FuncMap() []template.FuncMap {
 			"AppName": func() string {
 				return conf.App.BrandName
 			},
+			"AppDesc": func() string {
+				return conf.App.BrandDesc
+			},
 			"AppSubURL": func() string {
 				return conf.Server.Subpath
 			},

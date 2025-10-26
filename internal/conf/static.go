@@ -235,6 +235,7 @@ type AppOpts struct {
 	Version string `ini:"-"`
 
 	BrandName string
+	BrandDesc string
 	RunUser   string
 	RunMode   string
 }
