@@ -14,7 +14,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jaytaylor/html2text"
 	"gopkg.in/gomail.v2"
 	log "unknwon.dev/clog/v2"
 
@@ -40,16 +39,6 @@ func NewMessageFrom(to []string, from, subject, htmlBody string) *Message {
 	contentType := "text/html"
 	body := htmlBody
 	switchedToPlaintext := false
-	if conf.Email.UsePlainText || conf.Email.AddPlainTextAlt {
-		plainBody, err := html2text.FromString(htmlBody)
-		if err != nil {
-			log.Error("html2text.FromString: %v", err)
-		} else {
-			contentType = "text/plain"
-			body = plainBody
-			switchedToPlaintext = true
-		}
-	}
 	msg.SetBody(contentType, body)
 	if switchedToPlaintext && conf.Email.AddPlainTextAlt && !conf.Email.UsePlainText {
 		// The AddAlternative method name is confusing - adding html as an "alternative" will actually cause mail

@@ -62,8 +62,7 @@ func main() {
 		_, _ = w.WriteString("```\n")
 
 		table := tablewriter.NewWriter(w)
-		table.SetHeader([]string{"Field", "Column", "PostgreSQL", "MySQL", "SQLite3"})
-		table.SetBorder(false)
+		table.Header([]string{"Field", "Column", "PostgreSQL", "MySQL", "SQLite3"})
 		for j, f := range ti.Fields {
 			table.Append([]string{
 				f.Name, f.Column,
