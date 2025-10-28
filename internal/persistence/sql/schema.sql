@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS users {
+CREATE TABLE IF NOT EXISTS users (
     id BIGINT NOT NULL PRIMARY KEY,
     username TEXT NOT NULL,
     full_name TEXT NOT NULL,
@@ -17,21 +17,21 @@ CREATE TABLE IF NOT EXISTS users {
     num_teams      INTEGER DEFAULT 0,
     num_members    INTEGER DEFAULT 0,
 
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-}
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username
 ON users(username);
 
-CREATE TABLE IF NOT EXISTS repositories {
+CREATE TABLE IF NOT EXISTS repositories (
     id BIGINT NOT NULL PRIMARY KEY,
     owner_id BIGINT NOT NULL,
     lower_name TEXT NOT NULL,
     name TEXT,
     description TEXT,
-    website TEXT
-    default_branch TEXT
+    website TEXT,
+    default_branch TEXT,
     size BIGINT NOT NULL,
 
     -- COUNTERS 
@@ -66,14 +66,14 @@ CREATE TABLE IF NOT EXISTS repositories {
     pulls_allow_rebase     BOOLEAN,
     is_fork                BOOLEAN,
     fork_id                INTEGER,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_owner
         FOREIGN KEY (owner_id) 
         REFERENCES users (id)
         ON DELETE CASCADE
-}
+);
 
 CREATE INDEX IF NOT EXISTS idx_repositories_owner_id
 ON repositories(owner_id);
