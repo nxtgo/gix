@@ -12,9 +12,12 @@ import (
 	"gix.st/internal/server"
 )
 
+var Version = "dev"
+
 func main() {
 	cfg := config.Load()
 	logger := logging.New(cfg.Env)
+	logger.Info("starting gix", "version", Version)
 
 	srv := server.New(cfg, logger)
 

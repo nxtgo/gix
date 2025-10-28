@@ -10,5 +10,9 @@ func newRouter() *httprouter.Router {
 
 	r.GET("/health", handlers.Health)
 
+	// repos
+	r.POST("/api/repos", handlers.CreateRepo)
+	r.GET("/api/:username/:repo/info/refs", handlers.RepoRefs)
+
 	return r
 }
