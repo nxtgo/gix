@@ -10,11 +10,11 @@ import (
 )
 
 type createRepoRequest struct {
-	Owner string `json:"owner"`
-	Name  string `json:"name"`
+	Name string `json:"name"`
 }
 
-func CreateRepo(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func CreateRepo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	owner := p.ByName("username")
 	var req createRepoRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid JSON", http.StatusBadRequest)
@@ -23,7 +23,7 @@ func CreateRepo(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	storage := git.NewFileSystemStorage("data/repos")
 
-	repo, err := git.CreateRepo(storage.BasePath(), req.Owner, req.Name)
+	repo, err := git.CreateRepo(storage.BasePath(), owner, req.Name)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
